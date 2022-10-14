@@ -1,18 +1,18 @@
 const canvasSketch = require('canvas-sketch');
-const {math} = require("canvas-sketch-util");
+const {math, random} = require("canvas-sketch-util");
 
 const settings = {
-  dimensions: [ 1024, 1024 ]
+  dimensions: [ 2048,  ]
 };
 
 const sketch = () => {
   return ({ context, width, height }) => {
     // context.fillStyle = '#FFCCCB';
-    context.fillStyle = 'brown';
+    context.fillStyle = '#b2b2ff';
     context.fillRect(0, 0, width, height);
 
-    const cols = 12
-    const rows = 12
+    const cols = 20
+    const rows = 20
     const cellNum = cols * rows
 
     const gridw = width * 0.9
@@ -22,8 +22,8 @@ const sketch = () => {
     const marginx = (width - gridw) / 2
     const marginy = (height - gridh) / 2
 
-    context.lineWidth = 16
-    context.strokeStyle = '#2aa5a5'
+    context.lineWidth = 4
+    context.strokeStyle = '#ffffb2'
     for (let i = 0; i < cellNum; i++) {
       const col = i % cols
       const row = Math.floor(i / cols)
@@ -36,7 +36,10 @@ const sketch = () => {
       context.save()
       context.translate(x, y)
       context.translate(cellw * 0.5, cellh * 0.5)
-      context.rotate(math.degToRad(math.mapRange(i, 0, cellNum, 0, 90)))
+      const randRotate = random.noise2D(x, y, 0.001)
+      // context.rotate(math.degToRad(math.mapRange(i, 0, cellNum, 0, 90)))
+      context.rotate(randRotate)
+      context.lineWidth = math.mapRange(-randRotate, -1, 1, 0, 12)
 
       context.beginPath()
       context.moveTo(w * -0.5, 0)
